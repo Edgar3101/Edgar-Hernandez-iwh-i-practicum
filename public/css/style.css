@@ -102,3 +102,7 @@ select {
   select:hover {
     border-color: #999;
   }
+
+  .warning {
+    color: red;
+  }

@@ -13,8 +13,10 @@ app.use(express.json());
 
 
 // * Please DO NOT INCLUDE the private app access token in your repo. Don't do this practicum in your normal account.
+// Constans Required for the HubSpot API
 const PRIVATE_APP_ACCESS = process.env.PRIVATE_APP_ACCESS;
 const HUBSPOT_OBJECT_ID= "2-42357121";
+// Cache the options for the custom object property, we dont have a database to store this data.
 const measure_cached_options= [];
 // If the private app access token is not set, we will log an error and exit the application.
 if (!PRIVATE_APP_ACCESS) {
@@ -22,10 +24,18 @@ if (!PRIVATE_APP_ACCESS) {
     process.exit(1);
 }
 
-// TODO: ROUTE 1 - Create a new app.get route for the homepage to call your custom object data. Pass this data along to the front-end and create a new pug template in the views folder.
-
-// * Code for Route 1 goes here
-app.get("/update-cobj", async(req, res) => {
+/**
+ * Fetches and caches measure options for a specific HubSpot object property.
+ * 
+ * This function retrieves the options for the "time_measure" property of a HubSpot object
+ * using the HubSpot CRM API. If the options are already cached, it returns the cached options.
+ * Otherwise, it fetches the options from the API, caches them, and then returns them.
+ * 
+ * @function
+ * @returns {Promise<string[]>} A promise that resolves to an array of measure option values.
+ * @throws {Error} Logs an error to the console if the API request fails.
+ */
+async function getMeasureOptions(){
     if(!measure_cached_options.length){
         const url= `https://api.hubspot.com/crm/v3/properties/${HUBSPOT_OBJECT_ID}/time_measure`;
         const headers = {
@@ -35,21 +45,60 @@ app.get("/update-cobj", async(req, res) => {
         try {
             const resp = await axios.get(url, { headers });
             const data = resp.data;
-            measure_options= data.options.map((obj) => { return obj.value});
+            let measure_options= data.options.map((obj) => { return obj.value});
             measure_cached_options.push(...measure_options);
-            res.render('updates', { options: measure_options });      
         } catch (error) {
             console.error(error)
         }
-    }else{
-        res.render('updates', { options: measure_cached_options });
     }
+
+    return measure_cached_options;
+}
+
+// TODO: ROUTE 1 - Create a new app.get route for the homepage to call your custom object data. Pass this data along to the front-end and create a new pug template in the views folder.
+// * Code for Route 1 goes here
+app.get("/update-cobj", async(req, res) => {
+    const measure_options= await getMeasureOptions();
+    return res.render('updates', { options: measure_options });
 });
 
 // TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
 
 // * Code for Route 2 goes here
-
+app.post("/update-cobj", async(req, res) => {
+    // First we need to get the data from the form, and also, check if the data is valid.
+    let { name, institution,time_taken, time_measure } = req.body;
+    // We check if the data is valid
+    if(!name || !institution || !time_taken || !time_measure){
+        const measure_options= await getMeasureOptions();
+        return res.render('updates', { message: 'Please fill all the fields', options: measure_options });
+    }
+    // We trim the data to remove any extra spaces
+    name= name.trim();
+    institution= institution.trim();
+    time_taken= time_taken.trim();
+    // We create the URL and the headers for the request
+    const url= `https://api.hubspot.com/crm/v3/objects/${HUBSPOT_OBJECT_ID}`;
+    const headers = {
+        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`, 
+        'Content-Type': 'application/json'
+    }
+    try{
+        const data= {
+            properties: {
+                name,
+                institution,
+                time_taken,
+                time_measure
+            }
+        }
+        const resp= await axios.post(url, data, { headers });
+        return res.render('success', { message: 'Data has been saved successfully' });
+    }catch(error){
+        console.error(error);
+        return res.render('error', { message: 'An error occurred while saving the data' });
+    }
+});
 // TODO: ROUTE 3 - Create a new app.post route for the custom objects form to create or update your custom object data. Once executed, redirect the user to the homepage.
 
 // * Code for Route 3 goes here
