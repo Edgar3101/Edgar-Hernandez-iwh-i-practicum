@@ -1,0 +1,26 @@
+//- ** This is a sample of a pug template and how it uses the data passed to it from index.js.
+
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title Degrees Table
+    link(rel="stylesheet", href="/css/style.css")
+  body
+    h2 Degrees Table
+
+
+    .table-wrapper
+        a(href="/update-cobj" classname="update-link") Add/Update this table 
+        table
+            thead 
+                tr
+                    th Name
+                    th Institution
+                    th Time Taken
+            tbody
+                each degree in degrees
+                    tr
+                        td= degree.properties.name
+                        td= degree.properties.institution
+                        td= degree.properties.time_taken + " " + degree.properties.time_measure

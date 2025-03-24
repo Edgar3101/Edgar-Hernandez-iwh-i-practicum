@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-body, * {
+body,
+* {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
@@ -13,6 +14,56 @@ h1 {
 h2 {
     text-align: center;
     margin-bottom: 1rem;
+}
+
+
+/**
+For the ADD/Update button
+*/
+.update-link {
+    margin-bottom: 1rem;
+    /* text-align: center; */
+    color: #007BFF;
+    display: inline-block;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.update-link:hover {
+    text-decoration: underline;
+}
+
+/**
+For table styling
+*/
+
+.table-wrapper {
+    width: 60%;
+    margin: 0 auto;            
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #fff;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th,
+td {
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+
+th {
+    background-color: #ffcccc;
+    color: #333;
+    font-weight: bold;
 }
 
 .cards {
@@ -45,7 +96,8 @@ h2 {
     box-shadow: 3px 2px 6px lightgrey;
 }
 
-label, input {
+label,
+input {
     margin-top: 5px;
     display: block;
     font-size: inherit;
@@ -69,7 +121,7 @@ button[type="submit"] {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.2s ease;
-  }
+}
 
 input[type="submit"] {
     background-color: lightgrey;
@@ -79,7 +131,7 @@ input[type="submit"] {
 }
 
 select {
-    width: 30%;             
+    width: 30%;
     padding: 0.6rem;
     font-size: 1rem;
     border: 1px solid #ccc;
@@ -89,20 +141,20 @@ select {
     margin-bottom: 1.2rem;
     outline: none;
     transition: border-color 0.2s ease;
-  }
-  
-  select:focus {
-    border-color: #007BFF;   
-  }
-  
-  option {
-    padding: 0.6rem;
-  }
-  
-  select:hover {
-    border-color: #999;
-  }
+}
 
-  .warning {
+select:focus {
+    border-color: #007BFF;
+}
+
+option {
+    padding: 0.6rem;
+}
+
+select:hover {
+    border-color: #999;
+}
+
+.warning {
     color: red;
-  }
+}
