@@ -72,9 +72,10 @@ app.get('/', async (req, res) => {
     try {
         const resp = await axios.get(url, { headers, params });
         const degrees = resp.data.results;
-        res.render('homepage', { title: 'Contacts | HubSpot APIs', degrees });
+        return res.render('homepage', { title: 'Contacts | HubSpot APIs', degrees });
     } catch (error) {
         console.error(error);
+        return res.render('error', { message: 'An error occurred while fetching the data' });
     }
 });
 
