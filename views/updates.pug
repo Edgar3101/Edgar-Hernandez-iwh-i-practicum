@@ -1,0 +1,20 @@
+doctype html
+html 
+    head 
+        title= `${title}`
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(rel="stylesheet", href="/css/style.css")
+    body    
+        h2 Updates
+        form(method="POST" action="/update" class="form-wrapper")
+            label(for="institution") Institution
+            input(type="text" name="institution")
+            label(for="name") Name
+            input(type="text" name="name")
+            label(for="time_taken") Time Taken
+            input(type="number" name="time_taken")
+            label(for="time_taken") Time Measure
+            select
+                each option in options
+                    option(value=option)= option
+            input(type="submit" value="Update") 

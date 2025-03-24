@@ -10,6 +10,11 @@ h1 {
     margin: 1rem;
 }
 
+h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
 .cards {
     display: flex;
     align-items: center;
@@ -50,9 +55,50 @@ input[type="text"] {
     padding: .25rem;
 }
 
+input[type="number"] {
+    padding: .25rem;
+}
+
+
+button[type="submit"] {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
 input[type="submit"] {
     background-color: lightgrey;
     border: none;
     padding: .375rem 1rem;
     margin-top: 10px;
 }
+
+select {
+    width: 30%;             
+    padding: 0.6rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+    background-color: #fff;
+    margin-bottom: 1.2rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+  
+  select:focus {
+    border-color: #007BFF;   
+  }
+  
+  option {
+    padding: 0.6rem;
+  }
+  
+  select:hover {
+    border-color: #999;
+  }

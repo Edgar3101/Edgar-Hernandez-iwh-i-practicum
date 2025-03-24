@@ -14,10 +14,37 @@ app.use(express.json());
 
 // * Please DO NOT INCLUDE the private app access token in your repo. Don't do this practicum in your normal account.
 const PRIVATE_APP_ACCESS = process.env.PRIVATE_APP_ACCESS;
+const HUBSPOT_OBJECT_ID= "2-42357121";
+const measure_cached_options= [];
+// If the private app access token is not set, we will log an error and exit the application.
+if (!PRIVATE_APP_ACCESS) {
+    console.error('Please set the PRIVATE_APP_ACCESS environment variable.');
+    process.exit(1);
+}
 
 // TODO: ROUTE 1 - Create a new app.get route for the homepage to call your custom object data. Pass this data along to the front-end and create a new pug template in the views folder.
 
 // * Code for Route 1 goes here
+app.get("/update-cobj", async(req, res) => {
+    if(!measure_cached_options.length){
+        const url= `https://api.hubspot.com/crm/v3/properties/${HUBSPOT_OBJECT_ID}/time_measure`;
+        const headers = {
+            Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+            'Content-Type': 'application/json'
+        }
+        try {
+            const resp = await axios.get(url, { headers });
+            const data = resp.data;
+            measure_options= data.options.map((obj) => { return obj.value});
+            measure_cached_options.push(...measure_options);
+            res.render('updates', { options: measure_options });      
+        } catch (error) {
+            console.error(error)
+        }
+    }else{
+        res.render('updates', { options: measure_cached_options });
+    }
+});
 
 // TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
 
